@@ -1,6 +1,5 @@
 # cs5600_fl16_DSM_project
 Distributed Shared Memory support for xv6
-
 =========================================
 
 The distributed shared memory (DSM) implements the shared
@@ -9,15 +8,18 @@ memory. The shared memory model provides a virtual address space shared
 between all nodes. This Shared memory model will be implemented on xv6 codebase.
 The DSM implementation will involve kernel modification along with a user library support.
 
-
+-------------------------------------------------------------------------------------------
 
 Contributors:
-
 =============
 
 Abhay Kasturia
+
 Nakul Camasamudram
+
 Rashmi Dwaraka
+
+-------------------------------------------------------------------------------------------
 
 
 BUILDING AND RUNNING XV6:
@@ -37,6 +39,8 @@ To run xv6, you can use Bochs or QEMU, both PC simulators.
 Bochs makes debugging easier, but QEMU is much faster. 
 To run in Bochs, run "make bochs" and then type "c" at the bochs prompt.
 To run in QEMU, run "make qemu".
+
+-------------------------------------------------------------------------------------------
 
 
 ACKNOWLEDGMENTS:
