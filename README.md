@@ -8,6 +8,12 @@ memory. The shared memory model provides a virtual address space shared
 between all nodes. This Shared memory model will be implemented on xv6 codebase.
 The DSM implementation will involve kernel modification along with a user library support.
 
+A Distributed Shared Memory system support for xv6 is implemented as an
+application library that runs completely in userspace with kernel system call additions to xv6.
+
+We will evaluate the performance of our system vs the plain xv6 implementation using matrix
+multiplication benchmark.
+
 -------------------------------------------------------------------------------------------
 
 Contributors:
