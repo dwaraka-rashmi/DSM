@@ -1,0 +1,25 @@
+TODO
+
+1. Run 10 instances of xv6
+2. Connect the instances with a TCP connection
+3. Start with distributed memory manager for shared memory component which will be part of all the instances of the xv6
+4. The distributed memory manager should handle following:
+    1. Virtual address to physical address translation
+    2. Identify if the memory access is local or shared
+    3. implement page faults (additional if time)
+    4. implement read and write with coherence
+    5. current design decision: only 50% of memory of each system will be shared across. rest is used for local system operations
+    6. shared malloc and free library which handles the shared region only
+    7. modify current malloc and free to be restricted to local memory
+    8. free should handle reference counts before giving up the memory allocated
+    9. implement tcp conection as part of memory access abstraction layer
+5. Identify system calls to be part of kernel
+6. kernel modification to handle shared memory details
+
+
+Design decision:
+1. running DSM as part of kernel or in user space?
+
+
+
+
