@@ -1,9 +1,5 @@
 # cs5600_fl16_DSM_project
 
-Detailed Proposal:
-===================
-https://www.overleaf.com/7195668hdzvcnyjsfmx#/24822192/
-
 
 Distributed Shared Memory support for xv6
 =========================================
