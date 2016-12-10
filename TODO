@@ -1,3 +1,17 @@
+Updated TODO
+
+Due to lack of networking functionalities and unavailability of Off the Shelf networking capabilities, we are modifying the scope of the project to implement Distributed Shared Memory component on Linux OS.
+
+1. Run 10 instances of Linux
+2. Build centralized manager
+	1. handle page faults
+	2. memory allocation
+3. RPC module for socket connection
+4. client libraries to enable interaction redirection of memory access to shared location
+5. Implement Memory Coherance
+
+
+
 TODO
 
 1. Run 10 instances of xv6

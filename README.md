@@ -34,6 +34,11 @@ Rashmi Dwaraka
 -------------------------------------------------------------------------------------------
 
 
+UPDATE: Unable to use xv6 platform
+---------------------------------------------------------------------------------------------------
+Due to lack of time, we will be unable to build a network stack for xv6. Instead we choose linux 
+to implement the project's primary scope.
+
 BUILDING AND RUNNING XV6:
 
 =========================
