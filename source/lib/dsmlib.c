@@ -9,6 +9,9 @@
 // Old signal handler
 static struct sigaction old_sig_action;
 
+// Global lock
+pthread_mutex_t lock;
+
 // Shared areas
 int next_shared_page = 0;
 struct shared_area shared_areas[MAX_SHARED_REGIONS];
@@ -20,18 +23,80 @@ pthread_mutex_t mutexes[MAX_SHARED_PAGES];
 
 // Functions
 
+int in_shared_addr(void *addr) {
+	int i;
+	int uaddr = (uintptr_t)addr;
+  	for (i = 0; i < next_shared_page; i++) {
+    	if ((uaddr >= shared_areas[i].start) &&
+			(uaddr < PGADDR(shrp[i].start + shrp[i].length + PG_SIZE))) {
+      	return 1;
+    	}
+  	}
+  	return 0;
+}
+
+int writehandler(void *pg) {
+	int page_number = PGADDR_TO_PGNUM((uintptr_t) pg);
+
+	// Need to lock to use our condition variable.
+	pthread_mutex_lock(&mutexes[page_number % MAX_SHARED_PAGES]); 
+
+	if(request_page(page_number, "WRITE") != 0) {
+		pthread_mutex_unlock(&mutexes[page % MAX_SHARED_PAGES])
+		return -1;
+	}
+
+	// Wait for page message from server.
+	pthread_cond_wait(&conds[page_number % MAX_SHARED_PAGES], 
+		&mutexes[page_number % MAX_SHARED_PAGES]); 
+
+	// Unlock, allow another handler to run.
+	pthread_mutex_unlock(&mutexes[page_number] % MAX_SHARED_PAGES]); 
+
+	return 0;
+}
+
+int readhandler(void *pg) {
+	int page_number = PGADDR_TO_PGNUM((uintptr_t) pg);
+
+	// Need to lock to use our condition variable.
+	pthread_mutex_lock(&mutexes[page_number % MAX_SHARED_PAGES]); 
+
+	if(request_page(page_number, "READ") != 0) {
+		pthread_mutex_unlock(&mutexes[page % MAX_SHARED_PAGES])
+		return -1;
+	}
+
+	// Wait for page message from server.
+	pthread_cond_wait(&conds[page_number % MAX_SHARED_PAGES], 
+		&mutexes[page_number % MAX_SHARED_PAGES]); 
+
+	// Unlock, allow another handler to run.
+	pthread_mutex_unlock(&mutexes[page_number] % MAX_SHARED_PAGES]); 
+
+	return 0;
+}
+
+
 void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont) {
-	
 	if(signum != SIGSEGV || !in_shared_addr(siginfo->si_addr)) {
 		(old_sig_action.sa_handler)(signum);
 	}
 
 	page_address = (void *)PGADDR((uintptr_t) siginfo->si_addr);
-	http://stackoverflow.com/questions/17671869/how-to-identify-read-or-write-operations-of-page-fault-when-using-sigaction-hand
+	// http://stackoverflow.com/questions/17671869/how-to-identify-read-or-write-operations-of-page-fault-when-using-sigaction-hand
 	if(cont->uc_mcontext.gregs[REG_ERR] & PG_WRITE) {
 		// handle write fault
+		if (writehandler(pgaddr) < 0) {
+     		fprintf(stderr, "writehandler failed\n");
+      		exit(1);
+    	}
 	} else {
 		// handle read fault
+		if(readhandler(pgaddr) < 0) {
+			fprintf(stderr, "readhandler failed\n");
+			exit(1);
+		}
 	}
 }
 

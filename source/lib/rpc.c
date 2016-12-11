@@ -281,7 +281,7 @@ int handlePageRequest(char *msg) {
 }
 
 //Invoked from the client
-int requestpage(int pgnum, char *type) {
+int request_page(int pgnum, char *type) {
   char msg[100] = {0};
   snprintf(msg, 100, "REQUESTPAGE %s %d", type, pgnum);
   return sendMessage(msg);

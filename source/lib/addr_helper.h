@@ -1,3 +1,6 @@
+#ifndef _ADDR_HELPER_H
+#define _ADDR_HELPER_H
+
 #include <pthread.h>
 #include <stdint.h>
 
@@ -22,3 +25,5 @@ static inline uintptr_t PGNUM_TO_PGADDR(uintptr_t pgnum) {
 static inline uintptr_t PGADDR_TO_PGNUM(uintptr_t addr) {
   return addr >> PG_BITS;
 }
+
+#endif
