@@ -35,7 +35,7 @@ int in_shared_addr(void *addr) {
   	return 0;
 }
 
-int writehandler(void *pg) {
+int write_handler(void *pg) {
 	int page_number = PGADDR_TO_PGNUM((uintptr_t) pg);
 
 	// Need to lock to use our condition variable.
@@ -56,7 +56,7 @@ int writehandler(void *pg) {
 	return 0;
 }
 
-int readhandler(void *pg) {
+int read_handler(void *pg) {
 	int page_number = PGADDR_TO_PGNUM((uintptr_t) pg);
 
 	// Need to lock to use our condition variable.
@@ -89,13 +89,13 @@ void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont) {
 	// http://stackoverflow.com/questions/17671869/how-to-identify-read-or-write-operations-of-page-fault-when-using-sigaction-hand
 	if(cont->uc_mcontext.gregs[REG_ERR] & PG_WRITE) {
 		// handle write fault
-		if (writehandler(page_address) < 0) {
+		if (write_handler(page_address) < 0) {
      		fprintf(stderr, "writehandler failed\n");
       		exit(1);
     	}
 	} else {
 		// handle read fault
-		if(readhandler(page_address) < 0) {
+		if(read_handler(page_address) < 0) {
 			fprintf(stderr, "readhandler failed\n");
 			exit(1);
 		}

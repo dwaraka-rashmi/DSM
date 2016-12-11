@@ -22,7 +22,7 @@ struct shared_area {
 int dsmlib_init(char *ip, int port, uintptr_t starta, size_t len);
 int dsmlib_destroy(void);
 void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont);
-int writehandler(void *pg);
-int readhandler(void *pg);
+int write_handler(void *pg);
+int read_handler(void *pg);
 
 #endif
