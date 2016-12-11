@@ -1,7 +1,6 @@
-#include "encode.h"
-#include "dsmlib.h"
-#include "addr_helper.h"
-#include "rpc.h"
+#include "encode.c"
+#include "addr_helper.c"
+#include "rpc.c"
 
 // Old signal handler
 static struct sigaction old_sig_action;
