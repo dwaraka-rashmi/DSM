@@ -4,6 +4,7 @@
 
 #include "b64.h"
 #include "dsmlib.h"
+#include "addr_helper.h"
 
 // Old signal handler
 static struct sigaction old_sig_action;
@@ -18,6 +19,23 @@ pthread_cond_t conds[MAX_SHARED_PAGES];
 pthread_mutex_t mutexes[MAX_SHARED_PAGES];
 
 // Functions
+
+void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont) {
+	
+	if(signum != SIGSEGV || !in_shared_addr(siginfo->si_addr)) {
+		(old_sig_action.sa_handler)(signum);
+	}
+
+	page_address = (void *)PGADDR((uintptr_t) siginfo->si_addr);
+	http://stackoverflow.com/questions/17671869/how-to-identify-read-or-write-operations-of-page-fault-when-using-sigaction-hand
+	if(cont->uc_mcontext.gregs[REG_ERR] & PG_WRITE) {
+		// handle write fault
+	} else {
+		// handle read fault
+	}
+}
+
+
 int dsmlib_init(char *ip, int port, uintptr_t start, size_t length) {
 	struct sigaction new_sig_action;
 
