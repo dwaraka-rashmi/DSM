@@ -10,6 +10,8 @@
 #define PG_BITS 12
 #define PG_SIZE (1 << (PG_BITS))
 
+#define MAX_SHARED_PAGES 1000000
+
 
 // Given an address, return the start address of that page 
 static inline uintptr_t PGADDR(uintptr_t addr) {

@@ -6,7 +6,7 @@
 
 // Encode the data blocks in the input of size sz into base64 format and
 // stored in the outputBuffer out
-int base64Encode(const char *in, ssize_t sz, char *out) {
+int base64Encode(const char *in, size_t sz, char *out) {
 
   base64_encodestate state;
   base64_init_encodestate(&state);

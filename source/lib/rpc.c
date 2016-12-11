@@ -1,44 +1,11 @@
-#include <err.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <pthread.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
-
 #include "addr_helper.h" //page adrress handler functions
-#include "msgPkg.h" //data encode and decode functions
-
-
-// int initSocket(char *ip, int port);
-// int destroySocket(void);
-// int listener(void *ptr);
-// int messageHandler(char *payload);
-// int invalidate(char *payload);
-// void confirmInvalidateEncoded(int pgnum, char *encodedPage);
-// void confirmInvalidate(int pgnum);
-// int sendMessage(char *message);
-// int handlePageRequest(char *msg);
-// int requestpage(int pgnum, char *type);
+#include "encode.h" //data encode and decode functions
+#include "rpc.h"
 
 //socket state
 int socketfd;
 pthread_mutex_t socketLock;
 
-/* refer man getaddrinfo
-//    struct addrinfo {
-//       int              ai_flags;
-//       int              ai_family;
-//       int              ai_socktype;
-//       int              ai_protocol;
-//       socklen_t        ai_addrlen;
-//       struct sockaddr *ai_addr;
-//       char            *ai_canonname;
-//       struct addrinfo *ai_next;
-//   }; */
 struct addrinfo hints;
 struct addrinfo *resolvedAddr;
 
@@ -99,7 +66,7 @@ int destroySocket(void) {
 }
 
 /* Listen for messages from the centralized manager and handle. */
-int listener(void *ptr){
+void *listener(void *ptr){
 
 	int res;
 
@@ -122,7 +89,7 @@ int listener(void *ptr){
 		//Read the entire message from the socket
 		char message[10000] = {0};
 		res = recv(socketfd,message,headerLength + payloadLength, MSG_WAITALL);
-		if(res ! = headerLength + payloadLength){
+		if(res != headerLength + payloadLength){
 			err(1,"Unable to read from the socket");
 		}
 
@@ -241,17 +208,17 @@ int handlePageRequest(char *msg) {
     }
     
     char encodedData[7000];
-    if (base64Encode(encodedPage, encodedData) < 0) {
+    if (base64Decode(encodedPage, encodedData) < 0) {
       fprintf(stderr, "Failure decoding the encodedPage");
       return -1;
     }
 
     // memcpy -- must set to write first to fill in page!
-    if ((err = mprotect(pg, 1, (PROT_READ|PROT_WRITE))) != 0) {
+    if ((err = mprotect(pageAddr, 1, (PROT_READ|PROT_WRITE))) != 0) {
       fprintf(stderr, "Permission Alteration failed with error %d\n", err);
       return -1;
     }
-    if (memcpy(pg, encodedData, PG_SIZE) == NULL) {
+    if (memcpy(pageAddr, encodedData, PG_SIZE) == NULL) {
       fprintf(stderr, "memcpy failed.\n");
       return -1;
     }
@@ -259,12 +226,12 @@ int handlePageRequest(char *msg) {
 
   //Write
   if (strstr(msg, "WRITE") == NULL) {
-    if ((err = mprotect(pg, 1, PROT_READ)) != 0) {
+    if ((err = mprotect(pageAddr, 1, PROT_READ)) != 0) {
       fprintf(stderr, "Permission Alteration failed with error %d\n", err);
       return -1;
     }
   } else {
-    if ((err = mprotect(pg, 1, PROT_READ|PROT_WRITE)) != 0) {
+    if ((err = mprotect(pageAddr, 1, PROT_READ|PROT_WRITE)) != 0) {
       fprintf(stderr, "Permission Alteration failed with error %d\n", err);
       return -1;
     }
