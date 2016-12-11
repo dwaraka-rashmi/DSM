@@ -18,5 +18,6 @@ struct shared_area {
 // Functions
 int dsmlib_init(char *ip, int port, uintptr_t starta, size_t len);
 int dsmlib_destroy(void);
+void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont)
 
 #endif
