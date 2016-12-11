@@ -22,6 +22,7 @@
 // void confirmInvalidate(int pgnum);
 // int sendMessage(char *message);
 // int handlePageRequest(char *msg);
+// int requestpage(int pgnum, char *type);
 
 //socket state
 int socketfd;
@@ -277,4 +278,11 @@ int handlePageRequest(char *msg) {
   return 0;
 
 
+}
+
+//Invoked from the client
+int requestpage(int pgnum, char *type) {
+  char msg[100] = {0};
+  snprintf(msg, 100, "REQUESTPAGE %s %d", type, pgnum);
+  return sendMessage(msg);
 }

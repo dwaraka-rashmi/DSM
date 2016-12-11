@@ -1,0 +1,10 @@
+int initSocket(char *ip, int port);
+int destroySocket(void);
+int listener(void *ptr);
+int messageHandler(char *payload);
+int invalidate(char *payload);
+void confirmInvalidateEncoded(int pgnum, char *encodedPage);
+void confirmInvalidate(int pgnum);
+int sendMessage(char *message);
+int handlePageRequest(char *msg);
+int requestpage(int pgnum, char *type);
