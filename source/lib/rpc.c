@@ -8,10 +8,6 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
-// #include <sys/types.h>
-// #include <sys/socket.h>
-// #include <netinet/in.h>
-// #include <arpa/inet.h>
 
 #include "pageAddrHandler.h" //page adrress handler functions
 #include "msgPkg.h" //data encode and decode functions

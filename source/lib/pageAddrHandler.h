@@ -1,0 +1,25 @@
+#include <pthread.h>
+#include <stdint.h>
+
+#define REG_ERR 19
+#define PG_WRITE 0x2
+#define PG_PRESENT 0x1
+#define PG_BITS 12
+#define PG_SIZE (1 << (PG_BITS))
+
+#define MAX_SHARED_PAGES 1000000
+
+/*Given an address, return the start address of that page */
+static inline uintptr_t PGADDR(uintptr_t addr) {
+  return addr & ~(PG_SIZE - 1);
+}
+
+/*Given a page number, return the satrt address of the page */
+static inline uintptr_t PGNUM_TO_PGADDR(uintptr_t pgnum) {
+  return pgnum << PG_BITS;
+}
+
+/*Given page address, return the page number */ 
+static inline uintptr_t PGADDR_TO_PGNUM(uintptr_t addr) {
+  return addr >> PG_BITS;
+}
