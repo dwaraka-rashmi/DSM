@@ -1,5 +1,6 @@
 #include "b64/cencode.h"
 #include "b64/cdecode.h"
+#include "encode.h"
 #include <string.h>
 
 
