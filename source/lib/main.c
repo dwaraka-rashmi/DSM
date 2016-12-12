@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dsmlib.c"
-#include "addr_helper.c"
+#include "dsmlib.h"
+#include "addr_helper.h"
 
 int main(int argc, char *argv[]) {
 

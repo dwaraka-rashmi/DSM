@@ -43,7 +43,7 @@ clean:
 
 depend:
 	$(SRCS)
-	#makedepend $(INCLUDES) $^
+	makedepend $(INCLUDES) $^
 
 # DO NOT DELETE THIS LINE -- make depend depends on it
 

@@ -1,5 +1,6 @@
-#include "addr_helper.c" //page adrress handler functions
-#include "encode.c" //data encode and decode functions
+#include "addr_helper.h" //page adrress handler functions
+#include "encode.h" //data encode and decode functions
+#include "rpc.h"
 
 //socket state
 int socketfd;
