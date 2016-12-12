@@ -1,19 +1,6 @@
-#include <err.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <pthread.h>
-#include <stdint.h>
-#include <ucontext.h>
-
+#include "encode.c"
+#include "addr_helper.c"
 #include "rpc.c"
-
-#define MAX_SHARED_AREAS 100
-
-struct shared_area {
-	uintptr_t start;
-	size_t length;
-};
 
 // Old signal handler
 static struct sigaction old_sig_action;

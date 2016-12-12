@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "dsmlib.c"
+#include "addr_helper.c"
 
 int main(int argc, char *argv[]) {
 
