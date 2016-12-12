@@ -62,7 +62,7 @@ class EC2Instance():
     def ssh_and_run_command(self, command, ssh_flags=""):
         d = "ssh %s -i %s -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null %s@%s \'%s\'" %\
             (ssh_flags, self.key_location, self.user_name, self.public_dns_name, command)
-        print d
+        # print d
         subprocess.call(d, shell=True)
         #output = commands.getoutput(d)
 
@@ -143,4 +143,4 @@ class EC2Cloud():
 if __name__ == "__main__":
     cloud = EC2Cloud()
     cloud.get_existing_instances()
-    cloud.start_test("cd cs5600_fl16_DSM_project/source/lib; make; ./matrixmultiply2 35.165.189.66 4444")
+    cloud.start_test("cd cs5600_fl16_DSM_project/source/lib; make; ./matrixmultiply2 35.165.189.66 5600")
