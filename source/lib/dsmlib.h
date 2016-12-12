@@ -10,7 +10,7 @@
 #include <ucontext.h>
  
 // Constants
-#define MAX_SHARED_AREAS 100
+#define MAX_SHARED_AREAS 1000000
 
 // Data definitions
 struct shared_area {

@@ -1,3 +1,14 @@
+#include <err.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <pthread.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <unistd.h>
+
 #include "addr_helper.h" //page adrress handler functions
 #include "encode.h" //data encode and decode functions
 #include "rpc.h"
@@ -9,9 +20,9 @@ pthread_mutex_t socketLock;
 struct addrinfo hints;
 struct addrinfo *resolvedAddr;
 
-extern pthread_condattr_t waitca[MAX_SHARED_PAGES];
-extern pthread_cond_t waitc[MAX_SHARED_PAGES];
-extern pthread_mutex_t waitm[MAX_SHARED_PAGES];
+ pthread_condattr_t waitca[MAX_SHARED_PAGES];
+ pthread_cond_t waitc[MAX_SHARED_PAGES];
+ pthread_mutex_t waitm[MAX_SHARED_PAGES];
 
 
 /*initialize the socket connection

@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
   // Starting library. Shared memory is the 10 pages beginning at 0x12340000.
   char *ip = argv[1]; // Manager ip
   int port = atoi(argv[2]); // Manager port
-  initlibdsmu(ip, port, 0x12340000, 4096 * 10); // 10 pages shared
+  dsmlib_init(ip, port, 0x12340000, 4096 * 10); // 10 pages shared
 
   // invalidate test.
   while (1) {
