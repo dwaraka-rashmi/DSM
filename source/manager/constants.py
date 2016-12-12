@@ -1,6 +1,6 @@
 # CONSTANTS
 MANAGER_IP = "0.0.0.0"
-MANAGER_PORT = 5600
+MANAGER_PORT = 4444
 NUMPAGES = 100000
 MAX_CONN = 10  # Change to number of clients
 

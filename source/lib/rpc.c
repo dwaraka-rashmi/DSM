@@ -20,9 +20,9 @@ pthread_mutex_t socketLock;
 struct addrinfo hints;
 struct addrinfo *resolvedAddr;
 
- pthread_condattr_t waitca[MAX_SHARED_PAGES];
- pthread_cond_t waitc[MAX_SHARED_PAGES];
- pthread_mutex_t waitm[MAX_SHARED_PAGES];
+extern pthread_condattr_t cond_attrs[MAX_SHARED_PAGES];
+extern pthread_cond_t conds[MAX_SHARED_PAGES];
+extern pthread_mutex_t mutexes[MAX_SHARED_PAGES];
 
 
 /*initialize the socket connection
@@ -194,7 +194,7 @@ int handlePageRequest(char *msg) {
   int nspaces;
 
   // Acquire mutex lock for condition variable.
-  pthread_mutex_lock(&waitm[pgnum % MAX_SHARED_PAGES]);
+  pthread_mutex_lock(&mutexes[pgnum % MAX_SHARED_PAGES]);
 
   /* If EXISTING , decode the encoded data.
       Data begins after the 4th ' ' character in msg. */
@@ -239,10 +239,10 @@ int handlePageRequest(char *msg) {
   }
 
   // Signal the page handler
-  pthread_cond_signal(&waitc[pgnum % MAX_SHARED_PAGES]);
+  pthread_cond_signal(&conds[pgnum % MAX_SHARED_PAGES]);
 
   // Unlock to handle page faults in the queue.
-  pthread_mutex_unlock(&waitm[pgnum % MAX_SHARED_PAGES]);
+  pthread_mutex_unlock(&mutexes[pgnum % MAX_SHARED_PAGES]);
   return 0;
 }
 

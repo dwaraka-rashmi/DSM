@@ -2,21 +2,20 @@
 #include "dsmlib.h"
 #include "addr_helper.h"
 #include "rpc.h"
-
+//#include "global.h"
 // Old signal handler
 static struct sigaction old_sig_action;
 
 // Global lock
 pthread_mutex_t lock;
 
-// Shared areas
-int next_shared_page = 0;
-struct shared_area shared_areas[MAX_SHARED_AREAS];
-
-// Mutexes and locks
 pthread_condattr_t cond_attrs[MAX_SHARED_PAGES];
 pthread_cond_t conds[MAX_SHARED_PAGES];
 pthread_mutex_t mutexes[MAX_SHARED_PAGES];
+
+// Shared areas
+int next_shared_page = 0;
+struct shared_area shared_areas[MAX_SHARED_AREAS];
 
 // Thread that listens to the manager
 static pthread_t listener_thread;

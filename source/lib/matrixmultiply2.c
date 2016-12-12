@@ -69,13 +69,16 @@ int main(int argc, char *argv[]) {
   double factor = SIZE / n;
   int counter = 0;
 
+    printf("Initial value %d and size %d and factor %f and n %d and id %d", counter , SIZE , factor , n , id );
+
   for (i = 0; i < SIZE; i++) {
     if (i >= id * factor || i < (id - 1) * factor) {
+	// printf ("Continuing");
       continue;
     }
 
     counter++;
-    //printf("Processor id %d doing row %d\n", id, i);
+    printf("Initial value %d", counter);
 
     for (j = 0; j < SIZE; j++) {
       for (k = 0; k < SIZE; k++) {
