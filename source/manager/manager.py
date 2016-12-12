@@ -44,7 +44,7 @@ class Manager(object):
         self.clients[client] = client_socket
 
     def clientHandler(self, client_socket):
-        client = client_sock.getpeername()
+        client = client_socket.getpeername()
         while True:
             try:
                 data = client_socket.recv(10, socket.MSG_PEEK)
