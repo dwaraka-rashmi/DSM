@@ -76,7 +76,7 @@ class EC2Instance():
         return x == "hi"
 
     def begin(self, cmd, arg):
-        command = cmd + " " + str(arg) + " 9;"
+        command = cmd + " " + str(arg) + " 2;"
         # print command
         self.ssh_and_run_command(command)
         """

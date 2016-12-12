@@ -37,16 +37,24 @@ int main(int argc, char *argv[]) {
 
   srand(SEED);
 
+  // manager ip
   char *ip = argv[1];
+  // manager port
   int port = atoi(argv[2]);
+  // Id of the node 
   id = atoi(argv[3]);
+  // number of instances
   int n = atoi(argv[4]);
 
+  // get the library running
   dsmlib_init(ip, port, 0x12340000, 4096 * 10000);
 
+
+  // to get elapsed time 
+  // inspired by http://stackoverflow.com/questions/12722904/how-to-use-struct-timeval-to-get-the-execution-time
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  double start_ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+  double start_time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
 
   matrix_t *C = (matrix_t *) 0x12340000;
 
@@ -58,8 +66,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  double s = SIZE;
-  double factor = s / n;
+  double factor = SIZE / n;
   int counter = 0;
 
   for (i = 0; i < SIZE; i++) {
@@ -81,9 +88,9 @@ int main(int argc, char *argv[]) {
   printf("Processor id %d did %d rows\n", id, counter);
 
   gettimeofday(&tv, NULL);
-  double end_ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+  double end_time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
 
-  printf("TOTAL TIME (ms): %lf\n", (end_ms - start_ms));
+  printf("TOTAL TIME (ms): %lf\n", (end_time - start_time));
   printf("done\n");
 
   printf("sleeping for 10 seconds...\n");
