@@ -143,4 +143,4 @@ class EC2Cloud():
 if __name__ == "__main__":
     cloud = EC2Cloud()
     cloud.get_existing_instances()
-    cloud.start_test("cd cs5600_fl16_DSM_project/source/lib; make; ./matrixmultiply2 35.165.189.66 5600")
+    cloud.start_test("cd cs5600_fl16_DSM_project/source/lib; make; ./matrixmultiply2 35.165.189.66 5601")
