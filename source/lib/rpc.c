@@ -82,7 +82,7 @@ void *listener(void *ptr) {
   int res;
   printf("Listening...\n");
   while (1) {
-    printf("Sunn rha hu me...\n");
+    // printf("Sunn rha hu me...\n");
     //Get the Message (Payload) length
     char payloadStr[20] = {0};
     res = recv(socketfd, payloadStr, 10, MSG_PEEK | MSG_WAITALL);
