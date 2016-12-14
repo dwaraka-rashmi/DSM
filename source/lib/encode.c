@@ -25,6 +25,7 @@ int base64Decode(const char *encodedIn, char *out){
   base64_init_decodestate(&state);
 
   int count = base64_decode_block(encodedIn, strlen(encodedIn), out, &state);
+  // adding zero at the end of the buffer
   out[count] = 0;
   return count;
 

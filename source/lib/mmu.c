@@ -4,10 +4,9 @@
 #include <unistd.h>
 
 #include "dsmlib.h"
-#include "addr_helper.h"
 
-#define SIZE 2048
-#define SEED 69
+#define SIZE 102
+#define SEED 50
 
 typedef int matrix_t [SIZE][SIZE];
 
@@ -30,7 +29,7 @@ matrix_t A, B;
 int id;
 
 int main(int argc, char *argv[]) {
-  if (argc < 5) {
+  if (argc < 4) {
     printf("Usage: main MANAGER_IP MANAGER_PORT id[1|2|...|n] nodes[n]\n");
     return 1;
   }
@@ -69,20 +68,21 @@ int main(int argc, char *argv[]) {
   double factor = SIZE / n;
   int counter = 0;
 
-    printf("Initial value %d and size %d and factor %f and n %d and id %d", counter , SIZE , factor , n , id );
+  printf("Initial value %d and size %d and factor %f and n %d and id %d", counter , SIZE , factor , n , id );
 
   for (i = 0; i < SIZE; i++) {
     if (i >= id * factor || i < (id - 1) * factor) {
-	// printf ("Continuing");
+  // printf ("Continuing");
       continue;
     }
 
     counter++;
-    printf("Initial value %d", counter);
+    // printf("Initial value %d", counter);
 
     for (j = 0; j < SIZE; j++) {
       for (k = 0; k < SIZE; k++) {
         int temp = A[i][k] * B[k][j];
+        // printf("C calc");
         (*C)[i][j] += temp;
       }
     }
@@ -98,15 +98,7 @@ int main(int argc, char *argv[]) {
 
   printf("sleeping for 10 seconds...\n");
   sleep(10);
-
-  /*
-  printf("Matrix A\n--------\n");
-  print_matrix(A);
-  printf("Matrix B\n--------\n");
-  print_matrix(B);
-  printf("Matrix C\n--------\n");
-  print_matrix(*C);
-  */
+  
 
   dsmlib_destroy();
   return 0;

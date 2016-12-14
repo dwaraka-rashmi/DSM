@@ -30,15 +30,17 @@ extern pthread_mutex_t mutexes[MAX_SHARED_PAGES];
 int initSocket(char *ip, int port) {
 
   char managerPort[5];
+  int ret =0;
   snprintf(managerPort, 5, "%d", port);
 
   memset(&hints, 0, sizeof(hints));
   hints.ai_family = AF_INET;  /* change it to AF_UNSPEC to allow IPv4 or IPv6 */
   hints.ai_socktype = SOCK_STREAM; /* TCP socket */
 
-  if (getaddrinfo(ip, managerPort, &hints, &resolvedAddr) < 0) {
+  ret = getaddrinfo(ip, managerPort, &hints, &resolvedAddr);
+  if (ret < 0) {
     fprintf(stderr, "IP - Port cannot be resolved.. \n");
-    return -2;
+    return -1;
   }
 
   socketfd = socket(resolvedAddr->ai_family, resolvedAddr->ai_socktype, resolvedAddr->ai_protocol);
@@ -48,7 +50,8 @@ int initSocket(char *ip, int port) {
     return -2;
   }
 
-  if (connect(socketfd, resolvedAddr->ai_addr, resolvedAddr->ai_addrlen) < 0) {
+  ret = connect(socketfd, resolvedAddr->ai_addr, resolvedAddr->ai_addrlen);
+  if (ret < 0) {
     fprintf(stderr, "Unable to connect to the given IP address\n");
     freeaddrinfo(resolvedAddr);
     return -2;
@@ -56,17 +59,18 @@ int initSocket(char *ip, int port) {
 
   freeaddrinfo(resolvedAddr);
 
-  if (pthread_mutex_init(&socketLock, NULL) != 0) {
+  ret = pthread_mutex_init(&socketLock, NULL);
+  if (ret != 0) {
+    fprintf(stderr, "pthread initialization failed\n");
     return -3;
   }
-
   return 0;
-
 }
 
 /* Destroy the Socket connection with the centralized manager */
 int destroySocket(void) {
-  if (pthread_mutex_destroy(&socketLock) != 0) {
+  int ret = pthread_mutex_destroy(&socketLock); 
+  if (ret != 0) {
     return -3;
   }
   close(socketfd);
@@ -76,8 +80,9 @@ int destroySocket(void) {
 /* Listen for messages from the centralized manager and handle. */
 void *listener(void *ptr) {
   int res;
-
+  printf("Listening...\n");
   while (1) {
+    printf("Sunn rha hu me...\n");
     //Get the Message (Payload) length
     char payloadStr[20] = {0};
     res = recv(socketfd, payloadStr, 10, MSG_PEEK | MSG_WAITALL);
@@ -85,6 +90,7 @@ void *listener(void *ptr) {
       err(1, "unable to access the payload size");
     }
     int payloadLength = atoi(payloadStr);
+    printf("kitna payload h = %d", payloadLength);
 
     //Compute the Header length
     int headerLength;
@@ -95,23 +101,29 @@ void *listener(void *ptr) {
     //Read the entire message from the socket
     char message[10000] = {0};
     res = recv(socketfd, message, headerLength + payloadLength, MSG_WAITALL);
+
     if (res != headerLength + payloadLength) {
       err(1, "Unable to read from the socket");
     }
+    else
+      printf("Read properly wholely");
 
     const char s[] = " ";
     char *payload = strstr(message, s) + 1;
     messageHandler(payload);
   }
-
 }
 
 /* Registered the Message Handler here */
 int messageHandler(char *payload) {
-  if (strstr(payload, "INVALIDATE") != NULL)
+  if (strstr(payload, "INVALIDATE") != NULL){
+    printf("Invalidate request");
     invalidate(payload);
-  else if (strstr(payload, "REQUESTPAGE") != NULL)
+  }
+  else if (strstr(payload, "REQUESTPAGE") != NULL){
+    printf("request page request");
     handlePageRequest(payload);
+  }
   else printf("Undefined Message\n");
   return 0;
 }
@@ -173,7 +185,7 @@ int sendMessage(char *message) {
   int res;
 
   pthread_mutex_lock(&socketLock);
-  char msg[1000];
+  char msg[10000];
   sprintf(msg, "%zu %s", strlen(message), message);
 
   res = send(socketfd, msg, strlen(msg), 0);
