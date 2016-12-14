@@ -25,8 +25,6 @@ struct shared_area {
 int dsmlib_init(char *ip, int port, uintptr_t start, size_t len);
 int dsmlib_destroy(void);
 void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont);
-int write_handler(int page_number);
-int read_handler(int page_number);
 int read_write_handler(int page_number,char* operation);
 int add_shared_area(uintptr_t start, size_t len);
 
