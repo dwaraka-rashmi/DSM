@@ -5,7 +5,7 @@
 
 #include "dsmlib.h"
 
-#define SIZE 2500
+#define SIZE 1000
 #define SEED 50
 
 typedef int matrix_t [SIZE][SIZE];
@@ -30,7 +30,7 @@ int id;
 
 int main(int argc, char *argv[]) {
   if (argc < 4) {
-    printf("Usage: main MANAGER_IP MANAGER_PORT id[1|2|...|n] nodes[n]\n");
+    printf("Please use the following format for input arguments MANAGER_IP MANAGER_PORT NODE_ID[1,n] TOTAL_NODES[n]\n");
     return 1;
   }
 
@@ -68,8 +68,6 @@ int main(int argc, char *argv[]) {
   double factor = SIZE / n;
   int counter = 0;
 
-  printf("Initial value %d and size %d and factor %f and n %d and id %d", counter , SIZE , factor , n , id );
-
   for (i = 0; i < SIZE; i++) {
     if (i >= id * factor || i < (id - 1) * factor) {
   // printf ("Continuing");
@@ -93,8 +91,8 @@ int main(int argc, char *argv[]) {
   gettimeofday(&tv, NULL);
   double end_time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
 
-  printf("TOTAL TIME (ms): %lf\n", (end_time - start_time));
-  printf("done\n");
+  printf("TOTAL TIME TAKEN(ms): %lf\n", (end_time - start_time));
+  printf("Completed.\n");
 
   printf("sleeping for 10 seconds...\n");
   sleep(10);

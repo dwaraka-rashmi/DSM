@@ -55,7 +55,7 @@ class Manager:
 
 
     def processData(self, client, data):
-    	print data
+    	# print data
         tokens = data.split(" ")
         if tokens[0] == "REQUESTPAGE":
             self.requestPage(client, int(tokens[2]) % NUMPAGES, tokens[1])

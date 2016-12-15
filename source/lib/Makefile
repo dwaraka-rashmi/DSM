@@ -5,7 +5,6 @@ LFLAGS =
 LIBS = -lb64 -lpthread
 
 TESTS = mmu
-# SRCS = encode.c libdsmu.c dsmlib.c rpc.c
 SRCS = encode.c dsmlib.c rpc.c
 OBJS = $(SRCS:.c=.o)
 
@@ -14,9 +13,6 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(TESTS)
 	@echo Build complete.
-
-# main: main.o $(OBJS)
-# 	$(CC) $(CFLAGS) -o $@ $< $(OBJS) $(LFLAGS) $(LIBS)
 
 mmu: mmu.o $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $< $(OBJS) $(LFLAGS) $(LIBS)
@@ -32,5 +28,5 @@ depend:
 	$(SRCS)
 	makedepend $(INCLUDES) $^
 
-# DO NOT DELETE THIS LINE -- make depend depends on it
+# 
 

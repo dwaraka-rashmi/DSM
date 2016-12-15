@@ -82,7 +82,7 @@ void *listener(void *ptr) {
   int res;
   printf("Listening...\n");
   while (1) {
-    // printf("Sunn rha hu me...\n");
+    
     //Get the Message (Payload) length
     char payloadStr[20] = {0};
     res = recv(socketfd, payloadStr, 10, MSG_PEEK | MSG_WAITALL);
@@ -90,7 +90,6 @@ void *listener(void *ptr) {
       err(1, "unable to access the payload size");
     }
     int payloadLength = atoi(payloadStr);
-    printf("kitna payload h = %d", payloadLength);
 
     //Compute the Header length
     int headerLength;
@@ -106,7 +105,8 @@ void *listener(void *ptr) {
       err(1, "Unable to read from the socket");
     }
     else
-      printf("Read properly wholely");
+      ;
+      //printf("Read properly wholely");
 
     const char s[] = " ";
     char *payload = strstr(message, s) + 1;
@@ -117,11 +117,11 @@ void *listener(void *ptr) {
 /* Registered the Message Handler here */
 int messageHandler(char *payload) {
   if (strstr(payload, "INVALIDATE") != NULL){
-    printf("Invalidate request");
+    //printf("Invalidate request");
     invalidate(payload);
   }
   else if (strstr(payload, "REQUESTPAGE") != NULL){
-    printf("request page request");
+    //printf("request page request");
     handlePageRequest(payload);
   }
   else printf("Undefined Message\n");

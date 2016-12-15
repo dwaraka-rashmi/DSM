@@ -79,20 +79,6 @@ class EC2Instance():
         command = cmd + " " + str(arg) + " 2;"
         # print command
         self.ssh_and_run_command(command)
-        """
-        output = ""
-        timeout = time.time() + 60
-
-        while not re.compile("DONE").search(output):
-            #command = cmd + " " + str(arg) + " 9;"
-            command = cmd
-            print command
-            self.ssh_and_run_command(command+ " echo DONE")
-            #print "[%s] " % self.name + str(output)
-            time.sleep(1)
-            if time.time() > timeout:
-              break
-        """
 
 class EC2Cloud():
 
@@ -143,4 +129,4 @@ class EC2Cloud():
 if __name__ == "__main__":
     cloud = EC2Cloud()
     cloud.get_existing_instances()
-    cloud.start_test("cd cs5600_fl16_DSM_project/source/lib; make; ./matrixmultiply2 35.165.189.66 5601")
+    cloud.start_test("rm -rf *; git clone https://github.ccs.neu.edu/dwarakarashmi/cs5600_fl16_DSM_project.git; cd cs5600_fl16_DSM_project/source/lib; make; ./mmu 35.165.189.66 4600")

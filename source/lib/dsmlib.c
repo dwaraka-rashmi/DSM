@@ -39,9 +39,6 @@ int is_shared_addr(void *addr) {
 
 // handles a write page fault
 int read_write_handler(int page_number,char* operation) {
-	
-	// get the page number from the address
-	// int page_number = PGADDR_TO_PGNUM((uintptr_t)pg);
 
 	// Need to lock to use our condition variable.
 	pthread_mutex_lock(&mutexes[page_number % MAX_SHARED_PAGES]); 
@@ -51,7 +48,7 @@ int read_write_handler(int page_number,char* operation) {
 	if(ret == 0) {
 		// Wait for page message from server.
 		pthread_cond_wait(&conds[page_number % MAX_SHARED_PAGES], 
-		&mutexes[page_number % MAX_SHARED_PAGES]); 
+							&mutexes[page_number % MAX_SHARED_PAGES]); 
 
 		// Unlock, allow another handler to run.
 		pthread_mutex_unlock(&mutexes[page_number % MAX_SHARED_PAGES]);
@@ -68,13 +65,13 @@ int read_write_handler(int page_number,char* operation) {
 void page_fault_handler(int signum, siginfo_t *siginfo, ucontext_t *cont) {
 	void *page_address;
 
-	fprintf(stdout, "Inside custom page fault handler");
+	//fprintf(stdout, "Inside custom page fault handler");
 
 	// if the signal is not SIGSEGV or 
 	// the address in not in between the shared addresses
 	// let the original handler handle the request
 	if(signum != SIGSEGV || !is_shared_addr(siginfo->si_addr)) {
-		fprintf(stdout, "address apna nhi h , jaane do");
+		//fprintf(stdout, "address apna nhi h , jaane do");
 		(old_sig_action.sa_handler)(signum);
 	}
 
@@ -112,7 +109,7 @@ int dsmlib_init(char *ip, int port, uintptr_t start, size_t length) {
     	fprintf(stderr, "sigaction failed\n");
   	}
 	
-	printf("new handler init complete");
+	//printf("new handler init complete");
 
 
 	// Initialize mutexes
