@@ -1,6 +1,6 @@
 CC = gcc
 INCLUDES = -I../include
-CFLAGS = -g -Wall $(INCLUDES)
+CFLAGS = -g -fno-stack-protector -Wall $(INCLUDES)
 LFLAGS =
 LIBS = -lb64 -lpthread
 

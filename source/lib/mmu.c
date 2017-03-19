@@ -5,7 +5,7 @@
 
 #include "dsmlib.h"
 
-#define SIZE 1000
+#define SIZE 500
 #define SEED 50
 
 typedef int matrix_t [SIZE][SIZE];
